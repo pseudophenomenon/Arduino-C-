@@ -32,24 +32,30 @@ void loop() {
 
   // Calculating the distance
   distance = duration * 0.034 / 2;
+  bool objectDetected (distance <= 50);
 
-  bool objectDetected = (distance >= 50);
+  if (objectDetected = distance >= 50);
+  {
+
+  }
   // states true or false if an object is detected
+
   bool wasObjectDetected = false;
+
     if(objectDetected && !wasObjectDetected)
-  {
-    Serial.println("Object detected & present!");
-    delay(1000);
-  }
-  else if (!objectDetected && wasObjectDetected) 
-  {
-    Serial.println("Detected object is gone");
-    delay(1000);
-  }
-  else
+    {
+      Serial.println("Object detected & present!");
+      delay(1000);
+    }
+    if (!objectDetected && wasObjectDetected) 
+     {
+        Serial.println("Detected object is gone");
+        delay(1000);
+     }
   {
     // Prints the distance on the Serial Monitor
-    Serial.print("Waiting to detect an object");
+    Serial.println("Waiting to detect an object");
+    Serial.println(distance);
     delay(1000);
    
   }
