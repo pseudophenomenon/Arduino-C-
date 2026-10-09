@@ -1,0 +1,30 @@
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  for (int i = 0; i < 21; i++)
+  {
+    if (i < 10);
+    {
+      delay(200);
+      Serial.println(i);
+      Serial.print(" Is less than 10");
+    }
+    if (i == 10);
+    {
+      delay (200);
+      Serial.println(i);
+      Serial.print(" Is equal to 10");
+    }
+    if (i > 10);
+    {
+      delay (200);
+      Serial.println(i);
+      Serial.print(" Is bigger than 10)";
+    }
+  }
+
+}
