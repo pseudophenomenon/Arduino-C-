@@ -1,0 +1,25 @@
+// Define the 4 analog input pins
+const int sensorPins[4] = {A0, A1, A2, A3}; 
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Loop through each sensor and read its value
+  for (int i = 0; i < 4; i++) {
+    int rawValue = analogRead(sensorPins[i]);
+    int lightPercent = map(rawValue, 0, 1023, 0, 100);
+
+    Serial.print("Sensor ");
+    Serial.print(i + 1);
+    Serial.print(": ");
+    Serial.print(rawValue);
+    Serial.print(" (");
+    Serial.print(lightPercent);
+    Serial.print("%) | ");
+  }
+  
+  Serial.println(); // New line after printing all 4 sensors
+  delay(1000);
+}
