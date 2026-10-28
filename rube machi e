@@ -1,0 +1,59 @@
+#include <Servo.h>
+
+// Pin Definitions for UNO R4 WiFi
+const int ldr1Pin = A0;      // First photoresistor (Trigger)
+const int servoPin = 9;      // Servo motor pin
+const int ldr2Pin = A1;      // Second photoresistor (Landing detector)
+const int fanPin = 8;        // Switch module control pin for the 12V fan
+
+// Thresholds (Open Serial Monitor to calibrate these for your room)
+const int ldr1Threshold = 400; // Threshold to drop the cup
+const int ldr2Threshold = 510; // Threshold when the cup covers the pipe
+
+Servo cupServo;
+bool cupDropped = false;
+
+void setup() {
+  Serial.begin(9600);
+  
+  // Initialize servo
+  cupServo.attach(servoPin);
+  cupServo.write(0); // Initial position (holding the cup)
+  
+  // Initialize fan control pin
+  pinMode(fanPin, OUTPUT);
+  digitalWrite(fanPin, LOW); // Ensure fan starts OFF
+}
+
+void loop() {
+  // Phase 1: Monitor the first photoresistor to drop the cup
+  if (!cupDropped) {
+    int ldr1Value = analogRead(ldr1Pin);
+    Serial.print("LDR 1 Value: ");
+    Serial.println(ldr1Value);
+    
+    // Triggered when light drops below threshold (e.g., shadow passes over LDR 1)
+    if (ldr1Value < ldr1Threshold) {
+      Serial.println("Trigger detected! Dropping cup...");
+      cupServo.write(0); // Adjust angle (0 to 180) to release the latch
+      cupDropped = true;
+      delay(1500); // Wait for the cup to fall and settle
+    }
+  } 
+  // Phase 2: Once dropped, monitor the second photoresistor on the pipe
+  else {
+    int ldr2Value = analogRead(ldr2Pin);
+    Serial.print("LDR 2 Value: ");
+    Serial.println(ldr2Value);
+   
+    
+    // Triggered when the cup lands on the pipe and blocks light on LDR 2
+    if (ldr2Value > ldr2Threshold) {
+      Serial.println("Enabling 12V fan.");
+      digitalWrite(fanPin, HIGH); // Turn on the fan (triggers the switch module)
+      delay (500);
+    }
+  }
+  
+  delay(100); // Small delay for stability
+}
